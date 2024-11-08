@@ -17,12 +17,8 @@ use sp_runtime::{
 	traits::{AccountIdConversion, BadOrigin, Dispatchable},
 	AccountId32,
 };
-use xcm::{v3, v4::prelude::*, VersionedLocation};
+use xcm::{v4::prelude::*, VersionedLocation};
 use xcm_simulator::TestExt;
-
-type OldLocation = xcm::v2::MultiLocation;
-type OldJunctions = xcm::v2::Junctions;
-type OldJunction = xcm::v2::Junction;
 
 fn treasury_account() -> AccountId32 {
 	TreasuryAccount::get()
@@ -492,8 +488,8 @@ fn test_update_metadata_works() {
 			Some(new_metadata.additional.clone())
 		));
 
-		let old_location: v3::Location = old_metadata.location.unwrap().try_into().unwrap();
-		let new_location: v3::Location = new_metadata.location.clone().unwrap().try_into().unwrap();
+		let old_location: Location = old_metadata.location.unwrap().try_into().unwrap();
+		let new_location: Location = new_metadata.location.clone().unwrap().try_into().unwrap();
 
 		// check that the old location was removed and the new one added
 		assert_eq!(AssetRegistry::location_to_asset_id(old_location), None);
@@ -580,18 +576,6 @@ fn test_asset_authority() {
 			Some(2)
 		));
 	});
-}
-
-#[test]
-fn test_v2_to_v3_incompatible_multilocation() {
-	// Assert that V2 and V3 Location both are encoded differently
-	assert!(
-		OldLocation::new(
-			0,
-			OldJunctions::X1(OldJunction::GeneralKey(vec![0].try_into().unwrap()))
-		)
-		.encode() != Location::new(0, [Junction::from(BoundedVec::try_from(vec![0]).unwrap())]).encode()
-	);
 }
 
 #[test]
