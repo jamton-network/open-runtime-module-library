@@ -656,7 +656,7 @@ pub mod module {
 
 impl<T: Config> Pallet<T> {
 	pub(crate) fn deposit_consequence(
-		_who: &T::AccountId,
+		who: &T::AccountId,
 		currency_id: T::CurrencyId,
 		amount: T::Balance,
 		account: &AccountData<T::Balance>,
@@ -674,7 +674,7 @@ impl<T: Config> Pallet<T> {
 			None => return DepositConsequence::Overflow,
 		};
 
-		if new_total_balance < T::ExistentialDeposits::get(&currency_id) {
+		if new_total_balance < T::ExistentialDeposits::get(&currency_id) && !T::DustRemovalWhitelist::contains(who) {
 			return DepositConsequence::BelowMinimum;
 		}
 
