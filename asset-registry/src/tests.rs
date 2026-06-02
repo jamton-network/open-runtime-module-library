@@ -17,7 +17,7 @@ use sp_runtime::{
 	traits::{AccountIdConversion, BadOrigin, Dispatchable},
 	AccountId32,
 };
-use xcm::{v3, v4::prelude::*, VersionedLocation};
+use xcm::{v4::prelude::*, VersionedLocation};
 use xcm_simulator::TestExt;
 
 #[allow(deprecated)]
@@ -495,8 +495,8 @@ fn test_update_metadata_works() {
 			Some(new_metadata.additional.clone())
 		));
 
-		let old_location: v3::Location = old_metadata.location.unwrap().try_into().unwrap();
-		let new_location: v3::Location = new_metadata.location.clone().unwrap().try_into().unwrap();
+		let old_location: Location = old_metadata.location.unwrap().try_into().unwrap();
+		let new_location: Location = new_metadata.location.clone().unwrap().try_into().unwrap();
 
 		// check that the old location was removed and the new one added
 		assert_eq!(AssetRegistry::location_to_asset_id(old_location), None);

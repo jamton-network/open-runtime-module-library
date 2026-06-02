@@ -9,7 +9,6 @@ use sp_core::bounded::BoundedVec;
 use sp_io::TestExternalities;
 use sp_runtime::{traits::Convert, AccountId32, BuildStorage};
 use xcm::{
-	v3,
 	v4::{Asset, Location},
 };
 use xcm_simulator::{decl_test_network, decl_test_parachain, decl_test_relay_chain, TestExt};
@@ -57,7 +56,7 @@ pub enum CurrencyId {
 pub struct CurrencyIdConvert;
 impl Convert<CurrencyId, Option<Location>> for CurrencyIdConvert {
 	fn convert(id: CurrencyId) -> Option<Location> {
-		let loc: Option<v3::Location> = match id {
+		let loc: Option<Location> = match id {
 			CurrencyId::R => Some(Parent.try_into().unwrap()),
 			CurrencyId::A => Some(
 				(
@@ -147,7 +146,7 @@ impl Convert<Location, Option<CurrencyId>> for CurrencyIdConvert {
 			_ => None,
 		};
 		currency_id.or_else(|| {
-			let loc = v3::Location::try_from(l.clone()).ok()?;
+			let loc = Location::try_from(l.clone()).ok()?;
 			AssetRegistry::location_to_asset_id(&loc).map(CurrencyId::RegisteredAsset)
 		})
 	}
