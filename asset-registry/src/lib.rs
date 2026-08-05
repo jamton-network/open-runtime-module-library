@@ -14,10 +14,10 @@ use sp_runtime::{
 	DispatchResult,
 };
 use sp_std::prelude::*;
-use xcm::{v3::prelude::*, VersionedLocation};
+use xcm::{v4::prelude::*, VersionedLocation};
 
 pub use impls::*;
-use module::*;
+pub use module::*;
 pub use weights::WeightInfo;
 
 mod impls;
